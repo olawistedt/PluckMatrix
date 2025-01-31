@@ -1,0 +1,12 @@
+.DS_Store
+xcuserdata
+*.RPP-bak
+build-mac/
+build-win/
+build-web/
+*.ipch
+*.db
+*.suo
+*/.vs
+*.pem
+mkcert*
