@@ -80,7 +80,7 @@ jobs:
 
     - name: Upload mac DSYMs release asset
       if: matrix.os == 'macOS-latest'
-      uses: actions/upload-release-asset@v1
+      uses: actions/upload-release-asset@v4
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
@@ -91,7 +91,7 @@ jobs:
 
     - name: Upload mac dmg release asset
       if: matrix.os == 'macOS-latest'
-      uses: actions/upload-release-asset@v1
+      uses: actions/upload-release-asset@v4
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
@@ -139,7 +139,7 @@ jobs:
 
     - name: Upload Windows zip release asset
       if: matrix.os == 'windows-latest'
-      uses: actions/upload-release-asset@v1
+      uses: actions/upload-release-asset@v4
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
