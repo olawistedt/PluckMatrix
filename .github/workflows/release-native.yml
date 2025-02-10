@@ -25,7 +25,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.DEPLOY_TOKEN}}
         with:
           draft: true
           tag_name: ${{github.ref}}
@@ -82,7 +82,7 @@ jobs:
       if: matrix.os == 'macOS-latest'
       uses: actions/upload-release-asset@v4
       env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        GITHUB_TOKEN: ${{secrets.DEPLOY_TOKEN}}
       with:
         upload_url: ${{needs.create_release.outputs.upload_url}}
         asset_path: ${{env.PROJECT_NAME}}/${{matrix.build_dir}}/out/${{steps.mac_archivename_step.outputs.archive_name}}-dSYMs.zip
@@ -93,7 +93,7 @@ jobs:
       if: matrix.os == 'macOS-latest'
       uses: actions/upload-release-asset@v4
       env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        GITHUB_TOKEN: ${{secrets.DEPLOY_TOKEN}}
       with:
         upload_url: ${{needs.create_release.outputs.upload_url}}
         asset_path: ${{env.PROJECT_NAME}}/${{matrix.build_dir}}/out/${{steps.mac_archivename_step.outputs.archive_name}}.dmg
@@ -130,7 +130,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        GITHUB_TOKEN: ${{secrets.DEPLOY_TOKEN}}
       with:
         upload_url: ${{needs.create_release.outputs.upload_url}}
         asset_path: ${{env.PROJECT_NAME}}/${{matrix.build_dir}}/out/${{steps.win_archivename_step.outputs.archive_name}}-pdbs.zip
@@ -141,7 +141,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       uses: actions/upload-release-asset@v4
       env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        GITHUB_TOKEN: ${{secrets.DEPLOY_TOKEN}}
       with:
         upload_url: ${{needs.create_release.outputs.upload_url}}
         asset_path: ${{env.PROJECT_NAME}}/${{matrix.build_dir}}/out/${{steps.win_archivename_step.outputs.archive_name}}.zip
