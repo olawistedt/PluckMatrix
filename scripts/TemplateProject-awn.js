@@ -14,7 +14,7 @@ class TemplateProjectController extends WAMController
   }
 
   static importScripts (actx) {
-    var origin = "https://iPlug2.github.io/iPlug2OOS/";
+    var origin = "https://olawistedt.github.io/PluckMatrix/";
 
     return new Promise( (resolve) => {
       actx.audioWorklet.addModule(origin + "scripts/TemplateProject-wam.js").then(() => {
