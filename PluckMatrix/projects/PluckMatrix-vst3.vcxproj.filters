@@ -131,6 +131,12 @@
     <ClCompile Include="..\..\iPlug2\IGraphics\Drawing\IGraphicsSkia.cpp">
       <Filter>IGraphics\Drawing</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\iPlug2\IPlug\Extras\Synth\MidiSynth.cpp">
+      <Filter>IPlug\Extras\Synth</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\iPlug2\IPlug\Extras\Synth\VoiceAllocator.cpp">
+      <Filter>IPlug\Extras\Synth</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\iPlug2\IGraphics\IGraphicsEditorDelegate.cpp">
       <Filter>IGraphics</Filter>
     </ClCompile>
@@ -249,6 +255,18 @@
     <ClInclude Include="..\..\iPlug2\IGraphics\Controls\ITextEntryControl.h">
       <Filter>IGraphics\Controls</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\iPlug2\IPlug\Extras\Synth\ControlRamp.h">
+      <Filter>IPlug\Extras\Synth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\iPlug2\IPlug\Extras\Synth\MidiSynth.h">
+      <Filter>IPlug\Extras\Synth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\iPlug2\IPlug\Extras\Synth\SynthVoice.h">
+      <Filter>IPlug\Extras\Synth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\iPlug2\IPlug\Extras\Synth\VoiceAllocator.h">
+      <Filter>IPlug\Extras\Synth</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\iPlug2\IGraphics\Controls\IPopupMenuControl.h">
       <Filter>IGraphics\Controls</Filter>
     </ClInclude>
@@ -354,9 +372,10 @@
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugPluginBase.h">
       <Filter>IPlug</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\iPlug2\IGraphics\ISender.h">
-      <Filter>IGraphics</Filter>
+    <ClInclude Include="..\..\iPlug2\IPlug\ISender.h">
+      <Filter>IPlug</Filter>
     </ClInclude>
+    <ClInclude Include="..\PluckMatrix_DSP.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="resources">
@@ -385,6 +404,12 @@
     </Filter>
     <Filter Include="IPlug\VST3\VST3_SDK">
       <UniqueIdentifier>{8457d487-cc95-4187-8e99-6facd217dbb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IPlug\Extras">
+      <UniqueIdentifier>{bb278ea5-049c-488d-bfef-34ffc6054ad9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IPlug\Extras\Synth">
+      <UniqueIdentifier>{fddce9c1-111e-4057-b82b-11a032d799d3}</UniqueIdentifier>
     </Filter>
     <Filter Include="IPlug\VST3\VST3_SDK\public.sdk">
       <UniqueIdentifier>{83eddda9-c0ea-4a0b-8284-96f69457fe1b}</UniqueIdentifier>

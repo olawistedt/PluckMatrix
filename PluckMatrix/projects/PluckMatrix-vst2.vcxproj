@@ -38,41 +38,41 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tracer|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tracer|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -272,12 +272,15 @@
     <ClInclude Include="..\..\iPlug2\IGraphics\IGraphics_include_in_plug_hdr.h" />
     <ClInclude Include="..\..\iPlug2\IGraphics\IGraphics_include_in_plug_src.h" />
     <ClInclude Include="..\..\iPlug2\IGraphics\IGraphics_select.h" />
-    <ClInclude Include="..\..\iPlug2\IGraphics\ISender.h" />
     <ClInclude Include="..\..\iPlug2\IGraphics\Platforms\IGraphicsLinux.h" />
     <ClInclude Include="..\..\iPlug2\IGraphics\Platforms\IGraphicsMac.h" />
     <ClInclude Include="..\..\iPlug2\IGraphics\Platforms\IGraphicsMac_view.h" />
     <ClInclude Include="..\..\iPlug2\IGraphics\Platforms\IGraphicsWeb.h" />
     <ClInclude Include="..\..\iPlug2\IGraphics\Platforms\IGraphicsWin.h" />
+    <ClInclude Include="..\..\iPlug2\IPlug\Extras\Synth\ControlRamp.h" />
+    <ClInclude Include="..\..\iPlug2\IPlug\Extras\Synth\MidiSynth.h" />
+    <ClInclude Include="..\..\iPlug2\IPlug\Extras\Synth\SynthVoice.h" />
+    <ClInclude Include="..\..\iPlug2\IPlug\Extras\Synth\VoiceAllocator.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugAPIBase.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugConstants.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugEditorDelegate.h" />
@@ -286,15 +289,16 @@
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugPaths.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugPlatform.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugParameter.h" />
-    <ClInclude Include="..\..\iPlug2\IPlug\IPlugPluginBase.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugProcessor.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugStructs.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugTimer.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugUtilities.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlug_include_in_plug_hdr.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlug_include_in_plug_src.h" />
+    <ClInclude Include="..\..\iPlug2\IPlug\ISender.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\VST2\IPlugVST2.h" />
     <ClInclude Include="..\PluckMatrix.h" />
+    <ClInclude Include="..\PluckMatrix_DSP.h" />
     <ClInclude Include="..\resources\resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -310,17 +314,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\iPlug2\IGraphics\Drawing\IGraphicsSkia.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Tracer|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Tracer|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\iPlug2\IGraphics\IControl.cpp" />
     <ClCompile Include="..\..\iPlug2\IGraphics\IGraphics.cpp" />
     <ClCompile Include="..\..\iPlug2\IGraphics\IGraphicsEditorDelegate.cpp" />
     <ClCompile Include="..\..\iPlug2\IGraphics\Platforms\IGraphicsWin.cpp" />
+    <ClCompile Include="..\..\iPlug2\IPlug\Extras\Synth\MidiSynth.cpp" />
+    <ClCompile Include="..\..\iPlug2\IPlug\Extras\Synth\VoiceAllocator.cpp" />
     <ClCompile Include="..\..\iPlug2\IPlug\IPlugAPIBase.cpp" />
     <ClCompile Include="..\..\iPlug2\IPlug\IPlugParameter.cpp" />
     <ClCompile Include="..\..\iPlug2\IPlug\IPlugPaths.cpp" />

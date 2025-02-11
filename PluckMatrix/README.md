@@ -1,3 +1,2 @@
-# PluckMatrix readme
-
-iPlug2 template project
+# PluckMatrix
+A basic MPE capable synthesier plug-in with IGraphics GUI

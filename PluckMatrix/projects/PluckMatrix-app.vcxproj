@@ -38,41 +38,41 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tracer|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tracer|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -294,7 +294,6 @@
     <ClInclude Include="..\..\iPlug2\IGraphics\IGraphics_include_in_plug_hdr.h" />
     <ClInclude Include="..\..\iPlug2\IGraphics\IGraphics_include_in_plug_src.h" />
     <ClInclude Include="..\..\iPlug2\IGraphics\IGraphics_select.h" />
-    <ClInclude Include="..\..\iPlug2\IGraphics\ISender.h" />
     <ClInclude Include="..\..\iPlug2\IGraphics\Platforms\IGraphicsLinux.h" />
     <ClInclude Include="..\..\iPlug2\IGraphics\Platforms\IGraphicsMac.h" />
     <ClInclude Include="..\..\iPlug2\IGraphics\Platforms\IGraphicsMac_view.h" />
@@ -302,6 +301,10 @@
     <ClInclude Include="..\..\iPlug2\IGraphics\Platforms\IGraphicsWin.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\APP\IPlugAPP.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\APP\IPlugAPP_host.h" />
+    <ClInclude Include="..\..\iPlug2\IPlug\Extras\Synth\ControlRamp.h" />
+    <ClInclude Include="..\..\iPlug2\IPlug\Extras\Synth\MidiSynth.h" />
+    <ClInclude Include="..\..\iPlug2\IPlug\Extras\Synth\SynthVoice.h" />
+    <ClInclude Include="..\..\iPlug2\IPlug\Extras\Synth\VoiceAllocator.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugAPIBase.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugConstants.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugEditorDelegate.h" />
@@ -317,7 +320,9 @@
     <ClInclude Include="..\..\iPlug2\IPlug\IPlugUtilities.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlug_include_in_plug_hdr.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\IPlug_include_in_plug_src.h" />
+    <ClInclude Include="..\..\iPlug2\IPlug\ISender.h" />
     <ClInclude Include="..\PluckMatrix.h" />
+    <ClInclude Include="..\PluckMatrix_DSP.h" />
     <ClInclude Include="..\resources\resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -354,6 +359,8 @@
     <ClCompile Include="..\..\iPlug2\IPlug\APP\IPlugAPP_dialog.cpp" />
     <ClCompile Include="..\..\iPlug2\IPlug\APP\IPlugAPP_host.cpp" />
     <ClCompile Include="..\..\iPlug2\IPlug\APP\IPlugAPP_main.cpp" />
+    <ClCompile Include="..\..\iPlug2\IPlug\Extras\Synth\MidiSynth.cpp" />
+    <ClCompile Include="..\..\iPlug2\IPlug\Extras\Synth\VoiceAllocator.cpp" />
     <ClCompile Include="..\..\iPlug2\IPlug\IPlugAPIBase.cpp" />
     <ClCompile Include="..\..\iPlug2\IPlug\IPlugParameter.cpp" />
     <ClCompile Include="..\..\iPlug2\IPlug\IPlugPaths.cpp" />

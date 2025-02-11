@@ -4,8 +4,7 @@
 // If you want to build your project "out of source", you can change IPLUG2_ROOT and the path to common-ios.xcconfig
 
 IPLUG2_ROOT = ..\..\iPlug2
-
-#include "../../common-ios.xcconfig"
+#include "..\..\iPlug2/common-ios.xcconfig"
 
 //------------------------------
 // Global build settings
@@ -17,7 +16,7 @@ BINARY_NAME = PluckMatrix
 // HEADER AND LIBRARY SEARCH PATHS
 EXTRA_INC_PATHS = $(IGRAPHICS_INC_PATHS)
 EXTRA_LIB_PATHS = $(IGRAPHICS_LIB_PATHS)
-EXTRA_LNK_FLAGS = -framework Metal -framework MetalKit //$(IGRAPHICS_LNK_FLAGS)
+EXTRA_LNK_FLAGS = -framework Metal -framework MetalKit -framework Accelerate //$(IGRAPHICS_LNK_FLAGS)
 
 //------------------------------
 // PREPROCESSOR MACROS
@@ -51,3 +50,4 @@ GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO
 
 // Flags to pass to compiler for all builds
 GCC_CFLAGS = -Wno-write-strings
+
