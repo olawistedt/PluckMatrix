@@ -321,7 +321,7 @@ function abort(what) {
 
 var wasmBinaryFile;
 function findWasmBinary() {
-    return locateFile('TemplateProject-web.wasm');
+    return locateFile('PluckMatrix-web.wasm');
 }
 
 function getBinarySync(file) {
@@ -449,10 +449,10 @@ async function createWasm() {
 // === Body ===
 
 var ASM_CONSTS = {
-  100248: () => { if(Module.syncdone == 1) { Module.syncdone = 0; FS.syncfs(false, function (err) { assert(!err); console.log("Synced to IDBFS..."); Module.syncdone = 1; }); } },  
- 100410: ($0) => { var name = '/' + UTF8ToString($0) + '_data'; FS.mkdir(name); FS.mount(IDBFS, {}, name); Module.syncdone = 0; FS.syncfs(true, function (err) { assert(!err); console.log("Synced from IDBFS..."); Module.syncdone = 1; ccall('iplug_fsready', 'v'); }); },  
- 100657: ($0, $1, $2) => { if(typeof window[Module.UTF8ToString($0)] === 'undefined' ) { console.log("warning - SAMFUI called before controller exists"); } else { window[Module.UTF8ToString($0)].sendMessage('SAMFUI', "", Module.HEAPU8.slice($1, $1 + $2).buffer); } },  
- 100899: ($0) => { if(typeof window[Module.UTF8ToString($0)] === 'undefined' ) { console.log("warning - SendDSPIdleTick called before controller exists"); } else { window[Module.UTF8ToString($0)].sendMessage("TICK", "", 0.); } }
+  100216: () => { if(Module.syncdone == 1) { Module.syncdone = 0; FS.syncfs(false, function (err) { assert(!err); console.log("Synced to IDBFS..."); Module.syncdone = 1; }); } },  
+ 100378: ($0) => { var name = '/' + UTF8ToString($0) + '_data'; FS.mkdir(name); FS.mount(IDBFS, {}, name); Module.syncdone = 0; FS.syncfs(true, function (err) { assert(!err); console.log("Synced from IDBFS..."); Module.syncdone = 1; ccall('iplug_fsready', 'v'); }); },  
+ 100625: ($0, $1, $2) => { if(typeof window[Module.UTF8ToString($0)] === 'undefined' ) { console.log("warning - SAMFUI called before controller exists"); } else { window[Module.UTF8ToString($0)].sendMessage('SAMFUI', "", Module.HEAPU8.slice($1, $1 + $2).buffer); } },  
+ 100867: ($0) => { if(typeof window[Module.UTF8ToString($0)] === 'undefined' ) { console.log("warning - SendDSPIdleTick called before controller exists"); } else { window[Module.UTF8ToString($0)].sendMessage("TICK", "", 0.); } }
 };
 
 // end include: preamble.js
