@@ -35,7 +35,7 @@ PluckMatrix::PluckMatrix(const InstanceInfo& info)
     pGraphics->LoadFont("Roboto-Regular", ROBOTO_FN);
     pGraphics->AttachPanelBackground(COLOR_LIGHT_GRAY);
     pGraphics->AttachControl(new IVSliderControl(sliderBounds, kParamGain), kCtrlTagSlider);
-    pGraphics->AttachControl(new ITextControl(titleBounds, "Ola Wistedt", IText(30)), kCtrlTagTitle);
+    pGraphics->AttachControl(new ITextControl(titleBounds, "Ola Wistedt PluckMatrix", IText(30)), kCtrlTagTitle);
     WDL_String buildInfoStr;
     GetBuildInfoStr(buildInfoStr, __DATE__, __TIME__);
     pGraphics->AttachControl(new ITextControl(versionBounds, buildInfoStr.Get(), DEFAULT_TEXT.WithAlign(EAlign::Far)), kCtrlTagVersionNumber);
