@@ -168,7 +168,7 @@
               else
                 console.log("AudioWorklet Supported");
               
-              let inputBuses = [2];
+              let inputBuses = [];
               let outputBuses = [2];
               let options = {numberOfInputs: inputBuses.length, inputChannelCount: inputBuses, 
                              numberOfOutputs: outputBuses.length, outputChannelCount: outputBuses,
@@ -178,29 +178,6 @@
                 PluckMatrix_WAM = new PluckMatrixController(actx, options);
 
                 if(PluckMatrix_WAM !== undefined) {
-
-                  let NInputs = AWPF.isAudioWorkletPolyfilled ? PluckMatrix_WAM.input.numberOfInputs : PluckMatrix_WAM.numberOfInputs;
-                  
-                  if(NInputs > 0) {
-                    var constraints = { audio: true, video:false }
-                    navigator.mediaDevices.getUserMedia(constraints)
-                    .then((stream) => {
-                      let audioSource = actx.createMediaStreamSource(stream);
-
-                      // connect audioSource to WAM inputs
-                      if(AWPF.isAudioWorkletPolyfilled)
-                        audioSource.connect(PluckMatrix_WAM.input)
-                      else
-                        audioSource.connect(PluckMatrix_WAM);
-
-                      PluckMatrix_WAM.connect(actx.destination); // connect WAM output to speakers
-                      connectionsDone();
-                    })
-                    .catch((err) => {
-                      console.log('Error initializing user media stream: ' + err);
-                    });
-                  }
-                  else 
                   {
                     PluckMatrix_WAM.connect(actx.destination); // connect WAM output to speakers
                     connectionsDone();
