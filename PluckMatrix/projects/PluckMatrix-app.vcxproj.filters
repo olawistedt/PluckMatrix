@@ -83,6 +83,8 @@
     <ClCompile Include="..\..\iPlug2\IGraphics\Drawing\IGraphicsSkia.cpp">
       <Filter>IGraphics\Drawing</Filter>
     </ClCompile>
+    <ClCompile Include="..\Machine.cpp" />
+    <ClCompile Include="..\WitechControls.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PluckMatrix.h" />
@@ -277,6 +279,8 @@
       <Filter>IPlug</Filter>
     </ClInclude>
     <ClInclude Include="..\PluckMatrix_DSP.h" />
+    <ClInclude Include="..\Machine.h" />
+    <ClInclude Include="..\WitechControls.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="resources">
