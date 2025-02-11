@@ -65,9 +65,9 @@ private:
   PluckMatrixDSP<sample> mDSP{ 16 };
   IPeakAvgSender<2> mMeterSender;
   ISender<1> mLFOVisSender;
-  int mCurrentLed;
   ISender<1, 1, int> mLedSeqSender;
   Machine mMachine;
-
 #endif
+private:
+  int mCurrentLed;
 };
