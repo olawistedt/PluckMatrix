@@ -5,12 +5,13 @@
 #include "Machine.h"
 
 const int kNumPresets = 1;
+const int kNumberOfStepsInSequence = 32;
 const int kNumberOfSeqButtons = 13 * 32;
 
 enum EParams
 {
   kParamLedBtn0 = 0,
-  kParamGain = kParamLedBtn0 + 32,
+  kParamGain = kParamLedBtn0 + kNumberOfStepsInSequence,
   kParamNoteGlideTime,
   kParamAttack,
   kParamDecay,
@@ -32,7 +33,7 @@ enum EParams
 enum EControlTags
 {
   kCtrlTagLedSeq0 = 0,
-  kCtrlTagMeter = kCtrlTagLedSeq0 + 32,
+  kCtrlTagMeter = kCtrlTagLedSeq0 + kNumberOfStepsInSequence,
   kCtrlTagBtnSeq0,
   kCtrlTagLFOVis = kCtrlTagBtnSeq0 + kNumberOfSeqButtons,
   kCtrlTagScope,
@@ -65,6 +66,8 @@ private:
   IPeakAvgSender<2> mMeterSender;
   ISender<1> mLFOVisSender;
   int mCurrentLed;
+  ISender<1, 1, int> mLedSeqSender;
+  Machine mMachine;
 
 #endif
 };

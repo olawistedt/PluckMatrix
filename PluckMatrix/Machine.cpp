@@ -1,10 +1,13 @@
 #include "Machine.h"
 #include <algorithm>
 #include <assert.h>
+#include "PluckMatrix.h"
 
+//
+// The machine has only one task and that is to keep track of where the sequencer are.
+//
 Machine::Machine() : mCurrentStep(0), mNextStep(0), mDriftError(0.0), mCountDown(-1), mRunning(true)
 {
-  std::fill_n(reinterpret_cast<bool *>(mPatterns), 12 * 24 * 128, false);
 }
 
 void
@@ -52,7 +55,7 @@ Machine::StepSequencerOneSample()
       mCountDown -= 1;
     }
     mCurrentStep = mNextStep;
-    mNextStep = (mCurrentStep + 1) % 16;
+    mNextStep = (mCurrentStep + 1) % kNumberOfStepsInSequence;
     return true;
   }
 }

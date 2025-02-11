@@ -79,8 +79,8 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
     const IBitmap ledBtnBitmap = pGraphics->LoadBitmap(PNGBTNLED_FN, 2, true);
     for (int i = 0; i < 32; ++i)
     {
-      pGraphics->AttachControl(new GroupBtnControl(100.f + i * ledBtnBitmap.W() / 2,
-                                                   100.f + ledBtnBitmap.H(),
+      pGraphics->AttachControl(new GroupBtnControl(50.f + i * ledBtnBitmap.W() / 2,
+                                                   200.f + ledBtnBitmap.H(),
                                                    ledBtnBitmap,
                                                    kParamLedBtn0 + i,
                                                    mCurrentLed,
@@ -212,6 +212,18 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
 void
 PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
 {
+  mLedSeqSender.PushData({ kCtrlTagLedSeq0, { mMachine.getStep() } });
+  mMachine.mBpm = GetTempo();
+  for (int offset = 0; offset < nFrames; ++offset)
+  {
+    if (mMachine.StepSequencerOneSample())  // Returns true if a new step is entered.
+    {
+      mCurrentLed = mMachine.getStep();
+      mLedSeqSender.PushData({ kCtrlTagLedSeq0, { mCurrentLed } });
+    }
+  }
+
+  // Old stuff
   mDSP.ProcessBlock(nullptr, outputs, 2, nFrames, mTimeInfo.mPPQPos, mTimeInfo.mTransportIsRunning);
   mMeterSender.ProcessBlock(outputs, nFrames, kCtrlTagMeter);
   mLFOVisSender.PushData({ kCtrlTagLFOVis, { float(mDSP.mLFO.GetLastOutput()) } });
@@ -222,6 +234,7 @@ PluckMatrix::OnIdle()
 {
   mMeterSender.TransmitData(*this);
   mLFOVisSender.TransmitData(*this);
+  mLedSeqSender.TransmitData(*this);
 }
 
 void
@@ -229,6 +242,8 @@ PluckMatrix::OnReset()
 {
   mDSP.Reset(GetSampleRate(), GetBlockSize());
   mMeterSender.Reset(GetSampleRate());
+
+  mMachine.mSampleRate = GetSampleRate();
 }
 
 void

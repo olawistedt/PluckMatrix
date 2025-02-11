@@ -23,7 +23,6 @@ public:
   bool mRunning;
   double mBpm;
   double mSampleRate;
-  bool mPatterns[12][24][128];  // 12 drums with 24 patterns, where there for each can be 128 steps.
 private:
   int mCurrentStep;  // the current step
   int mNextStep;
