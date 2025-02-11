@@ -47,7 +47,7 @@ jobs:
       - name: Compile WAM
         run: |
           cd ${{env.PROJECT_NAME}}/scripts
-          ./makedist-web.sh off ${{env.URL}}
+          sh makedist-web.sh off ${{env.URL}}
           
       - name: Upload artifact
         uses: actions/upload-artifact@v4
