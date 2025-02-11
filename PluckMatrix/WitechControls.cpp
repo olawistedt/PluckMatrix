@@ -142,54 +142,6 @@ BounceBtnControl::OnMouseUp(float x, float y, const IMouseMod &mod)
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
-// SoloMuteBtnControl
-////////////////////////////////////////////////////////////////////////////////////////
-SoloMuteBtnControl::SoloMuteBtnControl(float x, float y, const IBitmap &bitmap, int paramIdx) :
-  IBSwitchControl(x, y, bitmap, paramIdx)
-{
-}
-
-void
-SoloMuteBtnControl::OnMsgFromDelegate(int msgTag, int dataSize, const void *pData)
-{
-  if (!IsDisabled() && msgTag == ISender<>::kUpdateMessage)
-  {
-    IByteStream stream(pData, dataSize);
-    int pos = 0;
-
-    ISenderData<1, std::array<mute_t, kNumberOfChannels>> d;
-    pos = stream.Get(&d, pos);
-    std::array<mute_t, kNumberOfChannels> muteValues = d.vals[0];
-
-    IControl *pMuteControlBtn;
-    IControl *pSoloControlBtn;
-
-    for (int i = 0; i < 12; i++)
-    {
-      pMuteControlBtn = GetUI()->GetControlWithTag(kCtrlTagBtnMute0 + i);
-      pSoloControlBtn = GetUI()->GetControlWithTag(kCtrlTagBtnSolo0 + i);
-
-      switch (muteValues[i])
-      {
-        case kNotMuted:
-          pMuteControlBtn->SetValueFromDelegate(0.0);  // Update value without marking dirty
-          pSoloControlBtn->SetValueFromDelegate(0.0);  // Update value without marking dirty
-          break;
-        case kMuted:
-        case kMutedBySolo:
-          pMuteControlBtn->SetValueFromDelegate(1.0);  // Update value without marking dirty
-          pSoloControlBtn->SetValueFromDelegate(0.0);  // Update value without marking dirty
-          break;
-        case kSolo:
-          pMuteControlBtn->SetValueFromDelegate(0.0);  // Update value without marking dirty
-          pSoloControlBtn->SetValueFromDelegate(1.0);  // Update value without marking dirty
-          break;
-      }
-    }
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////
 // TDSKnobControl
 ////////////////////////////////////////////////////////////////////////////////////////
 TDSKnobControl::TDSKnobControl(float x, float y, const IBitmap &bitmap, int paramIdx, int thisTag) :

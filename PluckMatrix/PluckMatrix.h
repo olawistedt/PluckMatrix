@@ -5,6 +5,7 @@
 #include "Machine.h"
 
 const int kNumPresets = 1;
+const int kNumberOfSeqButtons = 13 * 32;
 
 enum EParams
 {
@@ -32,7 +33,8 @@ enum EControlTags
 {
   kCtrlTagLedSeq0 = 0,
   kCtrlTagMeter = kCtrlTagLedSeq0 + 32,
-  kCtrlTagLFOVis,
+  kCtrlTagBtnSeq0,
+  kCtrlTagLFOVis = kCtrlTagBtnSeq0 + kNumberOfSeqButtons,
   kCtrlTagScope,
   kCtrlTagRTText,
   kCtrlTagKeyboard,
