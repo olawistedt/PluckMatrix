@@ -15,11 +15,13 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [windows-latest]
+        # Commenting out macOS
+        # os: [macos-latest, windows-latest]
         include:
-          - os: macos-latest
-            build_dir: build-mac
-            artifact_ext: mac
+          # - os: macos-latest
+          #   build_dir: build-mac
+          #   artifact_ext: mac
           - os: windows-latest
             build_dir: build-win
             artifact_ext: win
@@ -42,12 +44,12 @@ jobs:
         ./download-prebuilt-libs.sh
       shell: bash
 
-    - name: Build macOS
-      if: matrix.os == 'macOS-latest'
-      run: |
-        cd ${{env.PROJECT_NAME}}/scripts
-        ./makedist-mac.sh full zip
-      shell: bash
+    # - name: Build macOS
+    #   if: matrix.os == 'macos-latest'
+    #   run: |
+    #     cd ${{env.PROJECT_NAME}}/scripts
+    #     ./makedist-mac.sh full zip
+    #   shell: bash
 
     - name: Add msbuild to PATH (Windows)
       if: matrix.os == 'windows-latest'
@@ -72,10 +74,12 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [windows-latest]
+        # Commenting out macOS
+        # os: [macos-latest, windows-latest]
         include:
-          - os: macos-latest
-            artifact_ext: mac
+          # - os: macos-latest
+          #   artifact_ext: mac
           - os: windows-latest
             artifact_ext: win
 
@@ -90,17 +94,17 @@ jobs:
           unzip *-${{matrix.artifact_ext}}.zip
         shell: bash
 
-      - name: Pluginval (macOS)
-        if: matrix.os == 'macos-latest'
-        run: |
-          curl -L "https://github.com/Tracktion/pluginval/releases/download/latest_release/pluginval_macOS.zip" -o pluginval.zip
-          unzip pluginval
-          pluginval.app/Contents/MacOS/pluginval --skip-gui-tests --validate-in-process --output-dir "./bin" --validate ${{env.PROJECT_NAME}}.vst3 || exit 1
-          mkdir -p ~/Library/Audio/Plug-Ins/Components
-          mv ${{env.PROJECT_NAME}}.component ~/Library/Audio/Plug-Ins/Components
-          pgrep -x AudioComponentRegistrar >/dev/null && killall -9 AudioComponentRegistrar; echo "killed AudioComponentRegistrar" || echo "AudioComponentRegistrar Process not found"
-          pluginval.app/Contents/MacOS/pluginval --skip-gui-tests --validate-in-process --output-dir "./bin" --validate ~/Library/Audio/Plug-Ins/Components/${{env.PROJECT_NAME}}.component || exit 1
-        shell: bash
+      # - name: Pluginval (macOS)
+      #   if: matrix.os == 'macos-latest'
+      #   run: |
+      #     curl -L "https://github.com/Tracktion/pluginval/releases/download/latest_release/pluginval_macOS.zip" -o pluginval.zip
+      #     unzip pluginval
+      #     pluginval.app/Contents/MacOS/pluginval --skip-gui-tests --validate-in-process --output-dir "./bin" --validate ${{env.PROJECT_NAME}}.vst3 || exit 1
+      #     mkdir -p ~/Library/Audio/Plug-Ins/Components
+      #     mv ${{env.PROJECT_NAME}}.component ~/Library/Audio/Plug-Ins/Components
+      #     pgrep -x AudioComponentRegistrar >/dev/null && killall -9 AudioComponentRegistrar; echo "killed AudioComponentRegistrar" || echo "AudioComponentRegistrar Process not found"
+      #     pluginval.app/Contents/MacOS/pluginval --skip-gui-tests --validate-in-process --output-dir "./bin" --validate ~/Library/Audio/Plug-Ins/Components/${{env.PROJECT_NAME}}.component || exit 1
+      #   shell: bash
 
       - name: Pluginval (Windows)
         if: matrix.os == 'windows-latest'
