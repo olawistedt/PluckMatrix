@@ -208,25 +208,68 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
 #endif
 }
 
+void
+PluckMatrix::ProcessMidiMsg(const IMidiMsg &msg)
+{
+  TRACE;
+  mMidiQueue.Add(msg);  // Take care of MIDI events in ProcessBlock()
+}
+
 #if IPLUG_DSP
 void
 PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
 {
   mLedSeqSender.PushData({ kCtrlTagLedSeq0, { mMachine.getStep() } });
   mMachine.mBpm = GetTempo();
+  mOscillator.SetSampleRate(GetSampleRate());
+
   for (int offset = 0; offset < nFrames; ++offset)
   {
+    // The built in keyboard sends midi messages.
+    while (!mMidiQueue.Empty())
+    {
+      IMidiMsg msg = mMidiQueue.Peek();
+      if (msg.mOffset > offset)
+        break;
+
+      if (msg.StatusMsg() == IMidiMsg::kNoteOn)
+      {
+        if (msg.NoteNumber() >= 48 && msg.NoteNumber() <= 71)
+        {                          // Octav 2 and octav 3
+          mMachine.setStep(0, 0);  // When pattern note is pressed, begin the pattern from start.
+          mMachine.start();        // Start the sequencer.
+          mOscillator.NoteOn(msg.NoteNumber());  // Play midi notes outside the pattern range.
+        }
+        else
+        {
+          mOscillator.NoteOn(msg.NoteNumber());  // Play midi notes outside the pattern range.
+        }
+      }
+      else if (msg.StatusMsg() == IMidiMsg::kNoteOff)
+      {
+        mMachine.stop();
+        mOscillator.NoteOff();
+      }
+
+      mMidiQueue.Remove();
+    }
+
+
     if (mMachine.StepSequencerOneSample())  // Returns true if a new step is entered.
     {
       mCurrentLed = mMachine.getStep();
       mLedSeqSender.PushData({ kCtrlTagLedSeq0, { mCurrentLed } });
     }
+    outputs[0][offset] = outputs[1][offset] = mOscillator.ProcessSample();
   }
 
-  // Old stuff
-  mDSP.ProcessBlock(nullptr, outputs, 2, nFrames, mTimeInfo.mPPQPos, mTimeInfo.mTransportIsRunning);
-  mMeterSender.ProcessBlock(outputs, nFrames, kCtrlTagMeter);
-  mLFOVisSender.PushData({ kCtrlTagLFOVis, { float(mDSP.mLFO.GetLastOutput()) } });
+  //// Old stuff
+  //mDSP.ProcessBlock(nullptr, outputs, 2, nFrames, mTimeInfo.mPPQPos, mTimeInfo.mTransportIsRunning);
+  //mMeterSender.ProcessBlock(outputs, nFrames, kCtrlTagMeter);
+  //mLFOVisSender.PushData({ kCtrlTagLFOVis, { float(mDSP.mLFO.GetLastOutput()) } });
+
+
+  mMidiQueue.Flush(nFrames);
 }
 
 void
@@ -246,32 +289,6 @@ PluckMatrix::OnReset()
   mMachine.mSampleRate = GetSampleRate();
 }
 
-void
-PluckMatrix::ProcessMidiMsg(const IMidiMsg &msg)
-{
-  TRACE;
-
-  int status = msg.StatusMsg();
-
-  switch (status)
-  {
-    case IMidiMsg::kNoteOn:
-    case IMidiMsg::kNoteOff:
-    case IMidiMsg::kPolyAftertouch:
-    case IMidiMsg::kControlChange:
-    case IMidiMsg::kProgramChange:
-    case IMidiMsg::kChannelAftertouch:
-    case IMidiMsg::kPitchWheel:
-    {
-      goto handle;
-    }
-    default: return;
-  }
-
-handle:
-  mDSP.ProcessMidiMsg(msg);
-  SendMidiMsg(msg);
-}
 
 void
 PluckMatrix::OnParamChange(int paramIdx)
