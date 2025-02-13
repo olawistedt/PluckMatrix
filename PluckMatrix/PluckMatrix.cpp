@@ -208,6 +208,8 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
 #endif
 }
 
+#if IPLUG_DSP
+
 void
 PluckMatrix::ProcessMidiMsg(const IMidiMsg &msg)
 {
@@ -215,7 +217,6 @@ PluckMatrix::ProcessMidiMsg(const IMidiMsg &msg)
   mMidiQueue.Add(msg);  // Take care of MIDI events in ProcessBlock()
 }
 
-#if IPLUG_DSP
 void
 PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
 {
