@@ -322,6 +322,7 @@
     <ClInclude Include="..\..\iPlug2\IPlug\IPlug_include_in_plug_src.h" />
     <ClInclude Include="..\..\iPlug2\IPlug\ISender.h" />
     <ClInclude Include="..\Machine.h" />
+    <ClInclude Include="..\Oscillator.h" />
     <ClInclude Include="..\PluckMatrix.h" />
     <ClInclude Include="..\PluckMatrix_DSP.h" />
     <ClInclude Include="..\resources\resource.h" />
@@ -370,6 +371,7 @@
     <ClCompile Include="..\..\iPlug2\IPlug\IPlugProcessor.cpp" />
     <ClCompile Include="..\..\iPlug2\IPlug\IPlugTimer.cpp" />
     <ClCompile Include="..\Machine.cpp" />
+    <ClCompile Include="..\Oscillator.cpp" />
     <ClCompile Include="..\PluckMatrix.cpp" />
     <ClCompile Include="..\WitechControls.cpp" />
   </ItemGroup>

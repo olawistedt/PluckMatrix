@@ -5,6 +5,7 @@ include ../../iPlug2/common-web.mk
 
 SRC += $(PROJECT_ROOT)/PluckMatrix.cpp
 SRC += $(PROJECT_ROOT)/Machine.cpp
+SRC += $(PROJECT_ROOT)/Oscillator.cpp
 SRC += $(PROJECT_ROOT)/WitechControls.cpp
 
 WAM_SRC += $(IPLUG_EXTRAS_PATH)/Synth/*.cpp

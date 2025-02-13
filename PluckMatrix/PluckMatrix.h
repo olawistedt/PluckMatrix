@@ -3,6 +3,7 @@
 #include "IPlug_include_in_plug_hdr.h"
 #include "IControls.h"
 #include "Machine.h"
+#include "Oscillator.h"
 
 const int kNumPresets = 1;
 const int kNumberOfStepsInSequence = 32;
@@ -69,5 +70,7 @@ private:
   Machine mMachine;
 #endif
 private:
+  IMidiQueue mMidiQueue;
   int mCurrentLed;
+  Oscillator mOscillator;
 };

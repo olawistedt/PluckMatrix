@@ -85,6 +85,7 @@
     </ClCompile>
     <ClCompile Include="..\Machine.cpp" />
     <ClCompile Include="..\WitechControls.cpp" />
+    <ClCompile Include="..\Oscillator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PluckMatrix.h" />
@@ -281,6 +282,7 @@
     <ClInclude Include="..\PluckMatrix_DSP.h" />
     <ClInclude Include="..\Machine.h" />
     <ClInclude Include="..\WitechControls.h" />
+    <ClInclude Include="..\Oscillator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="resources">
