@@ -391,7 +391,6 @@ PluckMatrix::OnMessage(int msgTag, int ctrlTag, int dataSize, const void *pData)
 
   return false;
 }
-#endif
 
 std::array<bool, kNumberOfSeqButtons>
 PluckMatrix::CollectSequenceButtons(int patternNr)
@@ -411,3 +410,5 @@ PluckMatrix::CollectSequenceButtons(int patternNr)
   }
   return seq;
 }
+
+#endif
