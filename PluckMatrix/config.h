@@ -23,8 +23,8 @@
 #define PLUG_DOES_MPE 1
 #define PLUG_DOES_STATE_CHUNKS 0
 #define PLUG_HAS_UI 1
-#define PLUG_WIDTH 1800
-#define PLUG_HEIGHT 669
+#define PLUG_WIDTH 2000
+#define PLUG_HEIGHT 1000
 #define PLUG_FPS 60
 #define PLUG_SHARED_RESOURCES 0
 #define PLUG_HOST_RESIZE 0
@@ -55,4 +55,6 @@
 
 #define ROBOTO_FN "Roboto-Regular.ttf"
 
+#define BACKGROUND_FN "background.png"
 #define PNGBTNLED_FN "btnLed.png"
+#define PNGBTNNOTE_FN "btnNote.png"

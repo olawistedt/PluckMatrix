@@ -46,6 +46,33 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
                           IParam::kFlagCannotAutomate);
   }
 
+  // Note buttons. We don't want them to be able to automate.
+  for (int i = kParamNoteBtn0; i < kParamNoteBtn0 + kNumberOfNotes; ++i)
+  {
+    GetParam(i)->InitBool(("Note button " + std::to_string(i - kParamNoteBtn0)).c_str(),
+                          false,
+                          "On/Off",
+                          IParam::kFlagCannotAutomate);
+  }
+
+  // Property buttons. We don't want them to be able to automate.
+  for (int i = kParamPropBtn0; i < kParamPropBtn0 + kNumberOfProperties; ++i)
+  {
+    GetParam(i)->InitBool(("Proerty Note button " + std::to_string(i - kParamPropBtn0)).c_str(),
+                          false,
+                          "On/Off",
+                          IParam::kFlagCannotAutomate);
+  }
+
+  // Note buttons and property buttons. We don't want them to be able to automate.
+  for (int i = kParamPropBtn0; i < kParamPropBtn0 + kNumberOfProperties; ++i)
+  {
+    GetParam(i)->InitBool(("Property button " + std::to_string(i - kParamPropBtn0)).c_str(),
+                          false,
+                          "On/Off",
+                          IParam::kFlagCannotAutomate);
+  }
+
 #if IPLUG_EDITOR  // http://bit.ly/2S64BDd
   mMakeGraphicsFunc = [&]()
   {
@@ -59,7 +86,10 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
   mLayoutFunc = [&](IGraphics *pGraphics)
   {
     pGraphics->AttachCornerResizer(EUIResizerMode::Scale, false);
-    pGraphics->AttachPanelBackground(COLOR_GRAY);
+    //    pGraphics->AttachPanelBackground(COLOR_GRAY);
+    pGraphics->LoadBitmap(BACKGROUND_FN, 1, true);
+    pGraphics->AttachBackground(BACKGROUND_FN);
+
     pGraphics->EnableMouseOver(true);
     pGraphics->EnableMultiTouch(true);
 
@@ -74,13 +104,48 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
     IRECT keyboardBounds = b.GetFromBottom(300);
     IRECT wheelsBounds = keyboardBounds.ReduceFromLeft(100.f).GetPadded(-10.f);
 
+    // Note buttons
+    const IBitmap noteBtnBitmap = pGraphics->LoadBitmap(PNGBTNNOTE_FN, 2, true);
+    for (int i = 0; i < kNumberOfStepsInSequence; i++)
+    {
+      float xOffset = 50.f + i * (noteBtnBitmap.W() / 2 + 21) + (i / 4) * 12;
 
+      for (int j = 0; j < 12; j++)
+      {
+        pGraphics->AttachControl(new SeqNoteBtnControl(xOffset,
+                                                       250.f + j * (noteBtnBitmap.H() + 1),
+                                                       noteBtnBitmap,
+                                                       kParamNoteBtn0 +
+                                                           kNumberOfStepsInSequence * j + i),
+                                 kCtrlTagNote0 + kNumberOfStepsInSequence * j + i,
+                                 "Sequencer");
+      }
+    }
+
+    // Property buttons
+    for (int i = 0; i < kNumberOfStepsInSequence; i++)
+    {
+      float xOffset = 50.f + i * (noteBtnBitmap.W() / 2 + 21) + (i / 4) * 12;
+
+      for (int j = 0; j < 2; j++)
+      {
+        pGraphics->AttachControl(new SeqNoteBtnControl(xOffset,
+                                                       550.f + j * (noteBtnBitmap.H() + 1),
+                                                       noteBtnBitmap,
+                                                       kParamPropBtn0 +
+                                                           kNumberOfStepsInSequence * j + i),
+                                 kCtrlTagProp0 + kNumberOfStepsInSequence * j + i,
+                                 "Sequencer");
+      }
+    }
     // Led buttons
     const IBitmap ledBtnBitmap = pGraphics->LoadBitmap(PNGBTNLED_FN, 2, true);
-    for (int i = 0; i < 32; ++i)
+    for (int i = 0; i < kNumberOfStepsInSequence; ++i)
     {
-      pGraphics->AttachControl(new GroupBtnControl(50.f + i * ledBtnBitmap.W() / 2,
-                                                   200.f + ledBtnBitmap.H(),
+      float xOffset = 50.f + i * (ledBtnBitmap.W() / 2) + (i / 4) * 12;
+
+      pGraphics->AttachControl(new GroupBtnControl(xOffset,
+                                                   590.f + ledBtnBitmap.H(),
                                                    ledBtnBitmap,
                                                    kParamLedBtn0 + i,
                                                    mCurrentLed,
@@ -91,7 +156,7 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
     }
 
 
-    pGraphics->AttachControl(new IVKeyboardControl(keyboardBounds), kCtrlTagKeyboard);
+    pGraphics->AttachControl(new IVKeyboardControl(keyboardBounds, 36, 80), kCtrlTagKeyboard);
     pGraphics->AttachControl(new IWheelControl(wheelsBounds.FracRectHorizontal(0.5)),
                              kCtrlTagBender);
     pGraphics->AttachControl(new IWheelControl(wheelsBounds.FracRectHorizontal(0.5, true),
@@ -279,6 +344,7 @@ PluckMatrix::OnIdle()
   mMeterSender.TransmitData(*this);
   mLFOVisSender.TransmitData(*this);
   mLedSeqSender.TransmitData(*this);
+  mSequencerSender.TransmitData(*this);
 }
 
 void
@@ -288,6 +354,7 @@ PluckMatrix::OnReset()
   mMeterSender.Reset(GetSampleRate());
 
   mMachine.mSampleRate = GetSampleRate();
+  mSequencerSender.PushData({ kCtrlTagNote0, { CollectSequenceButtons(-1) } });
 }
 
 
@@ -310,7 +377,7 @@ PluckMatrix::OnParamChangeUI(int paramIdx, EParamSource source)
       pGraphics->HideControl(kParamLFORateTempo, !sync);
     }
   }
-#endif
+#endif  // IPLUG_EDITOR
 }
 
 bool
@@ -325,3 +392,22 @@ PluckMatrix::OnMessage(int msgTag, int ctrlTag, int dataSize, const void *pData)
   return false;
 }
 #endif
+
+std::array<bool, kNumberOfSeqButtons>
+PluckMatrix::CollectSequenceButtons(int patternNr)
+{
+  std::array<bool, kNumberOfSeqButtons> seq;
+
+  if (patternNr == -1)
+  {
+    patternNr = mPatterns.mSelectedPattern;
+  }
+
+  for (int i = 0; i < kNumberOfNotes; ++i)
+  {
+    int col = i % kNumberOfStepsInSequence;
+    int row = i / kNumberOfStepsInSequence;
+    seq[i] = mPatterns.mNotes[patternNr][col] == row;
+  }
+  return seq;
+}

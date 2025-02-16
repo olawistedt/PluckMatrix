@@ -4,15 +4,19 @@
 #include "IControls.h"
 #include "Machine.h"
 #include "Oscillator.h"
+#include "Patterns.h"
 
 const int kNumPresets = 1;
 const int kNumberOfStepsInSequence = 32;
-const int kNumberOfSeqButtons = 13 * 32;
+const int kNumberOfProperties = 32 * 2;
+const int kNumberOfSeqButtons = kNumberOfNotes + kNumberOfProperties;
 
 enum EParams
 {
   kParamLedBtn0 = 0,
-  kParamGain = kParamLedBtn0 + kNumberOfStepsInSequence,
+  kParamNoteBtn0 = kParamLedBtn0 + kNumberOfStepsInSequence,
+  kParamPropBtn0 = kParamNoteBtn0 + kNumberOfNotes,
+  kParamGain = kParamPropBtn0 + kNumberOfProperties,
   kParamNoteGlideTime,
   kParamAttack,
   kParamDecay,
@@ -34,9 +38,10 @@ enum EParams
 enum EControlTags
 {
   kCtrlTagLedSeq0 = 0,
-  kCtrlTagMeter = kCtrlTagLedSeq0 + kNumberOfStepsInSequence,
-  kCtrlTagBtnSeq0,
-  kCtrlTagLFOVis = kCtrlTagBtnSeq0 + kNumberOfSeqButtons,
+  kCtrlTagNote0 = kCtrlTagLedSeq0 + kNumberOfStepsInSequence,
+  kCtrlTagProp0 = kCtrlTagNote0 + kNumberOfNotes,
+  kCtrlTagMeter = kCtrlTagProp0 + kNumberOfProperties,
+  kCtrlTagLFOVis,
   kCtrlTagScope,
   kCtrlTagRTText,
   kCtrlTagKeyboard,
@@ -52,7 +57,7 @@ class PluckMatrix final : public Plugin
 public:
   PluckMatrix(const InstanceInfo &info);
 
-#if IPLUG_DSP  // http://bit.ly/2S64BDd
+#if IPLUG_DSP
 public:
   void ProcessBlock(sample **inputs, sample **outputs, int nFrames) override;
   void ProcessMidiMsg(const IMidiMsg &msg) override;
@@ -63,14 +68,19 @@ public:
   bool OnMessage(int msgTag, int ctrlTag, int dataSize, const void *pData) override;
 
 private:
+  std::array<bool, kNumberOfSeqButtons> CollectSequenceButtons(int patternNr = -1);
+
   PluckMatrixDSP<sample> mDSP{ 16 };
   IPeakAvgSender<2> mMeterSender;
   ISender<1> mLFOVisSender;
   ISender<1, 1, int> mLedSeqSender;
+  ISender<1, 1, std::array<bool, kNumberOfSeqButtons>> mSequencerSender;
   Machine mMachine;
-#endif
+#endif  // IPLUG_DSP
 private:
+  Patterns mPatterns;
   IMidiQueue mMidiQueue;
-  int mCurrentLed;
   Oscillator mOscillator;
+  int mCurrentLed;
+  int mSelectedPattern;
 };

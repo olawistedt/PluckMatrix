@@ -19,7 +19,7 @@ SeqNoteBtnControl::SetSequencerButtons(std::array<bool, kNumberOfSeqButtons> seq
   Trace(TRACELOC, "");
   for (int i = 0; i < kNumberOfSeqButtons; i++)
   {
-    IControl *pControlBtn = ui->GetControlWithTag(kCtrlTagBtnSeq0 + i);
+    IControl *pControlBtn = ui->GetControlWithTag(kCtrlTagNote0 + i);
     double before = pControlBtn->GetValue();
     pControlBtn->SetValue(sequencer[i] ? 1.0 : 0.0);
     if (before != pControlBtn->GetValue())
