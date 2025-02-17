@@ -55,4 +55,5 @@
 
 #define ROBOTO_FN "Roboto-Regular.ttf"
 
+#define BACKGROUND_FN "background.png"
 #define PNGBTNLED_FN "btnLed.png"

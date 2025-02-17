@@ -150,6 +150,7 @@ END
 BEGIN
     "#include ""..\\config.h""\r\n"
     "ROBOTO_FN TTF ROBOTO_FN\r\n"
+    "BACKGROUND_FN PNG BACKGROUND_FN\r\n"
     "PNGBTNLED_FN PNG PNGBTNLED_FN\0"
 END
 
@@ -231,6 +232,7 @@ END
 //
 #include "..\config.h"
 ROBOTO_FN TTF ROBOTO_FN
+BACKGROUND_FN PNG BACKGROUND_FN
 PNGBTNLED_FN PNG PNGBTNLED_FN
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
