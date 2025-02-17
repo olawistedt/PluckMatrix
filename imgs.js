@@ -345,7 +345,7 @@ Module['FS_createPath']("/resources", "img", true, true);
     }
 
     }
-    loadPackage({"files": [{"filename": "/resources/img/btnLed.png", "start": 0, "end": 4679}, {"filename": "/resources/img/btnProp-Brons.png", "start": 4679, "end": 6751}], "remote_package_size": 6751, "package_uuid": "sha256-7cb6cb3193a9d36c12435e165fc6488b7f5ae1afc1c58fa32dbef7d703379f71"});
+    loadPackage({"files": [{"filename": "/resources/img/Background.png", "start": 0, "end": 37138}, {"filename": "/resources/img/Background.xcf", "start": 37138, "end": 96569}, {"filename": "/resources/img/btnLed.png", "start": 96569, "end": 101248}, {"filename": "/resources/img/btnNote.png", "start": 101248, "end": 103320}, {"filename": "/resources/img/btnProp-Brons.png", "start": 103320, "end": 105392}], "remote_package_size": 105392, "package_uuid": "sha256-d38037fcb893690150dbaca5142c24ec4277cc48259e3e248cd1bbbeb89058e7"});
 
   })();
 
