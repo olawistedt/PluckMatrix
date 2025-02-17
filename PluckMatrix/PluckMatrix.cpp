@@ -86,9 +86,11 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
   mLayoutFunc = [&](IGraphics *pGraphics)
   {
     pGraphics->AttachCornerResizer(EUIResizerMode::Scale, false);
-    //    pGraphics->AttachPanelBackground(COLOR_GRAY);
-    pGraphics->LoadBitmap(BACKGROUND_FN, 1, true);
-    pGraphics->AttachBackground(BACKGROUND_FN);
+
+    const IColor COLOR_PLUCK_MATRIX_BLACK(255, 30, 30, 30);
+    pGraphics->AttachPanelBackground(COLOR_PLUCK_MATRIX_BLACK);
+    //    pGraphics->LoadBitmap(BACKGROUND_FN, 1, true);
+    //    pGraphics->AttachBackground(BACKGROUND_FN);
 
     pGraphics->EnableMouseOver(true);
     pGraphics->EnableMultiTouch(true);
