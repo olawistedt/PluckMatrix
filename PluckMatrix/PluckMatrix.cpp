@@ -170,7 +170,7 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
                              kCtrlTagLFOVis,
                              "LFO");
 
-    pGraphics->AttachControl(new IVGroupControl("LFO", "LFO", 10.f, 20.f, 10.f, 10.f));
+    pGraphics->AttachControl(new IVGroupControl("Version 1.0", "LFO", 10.f, 20.f, 10.f, 10.f));
 
     pGraphics
         ->AttachControl(new IVButtonControl(
