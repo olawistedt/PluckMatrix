@@ -59,10 +59,10 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
   mLayoutFunc = [&](IGraphics *pGraphics)
   {
     pGraphics->AttachCornerResizer(EUIResizerMode::Scale, false);
-    //    pGraphics->AttachPanelBackground(COLOR_GRAY);
-    pGraphics->LoadBitmap(BACKGROUND_FN, 1, true);
-    pGraphics->AttachBackground(BACKGROUND_FN);
-    
+    pGraphics->AttachPanelBackground(COLOR_GRAY);
+    //    pGraphics->LoadBitmap(BACKGROUND_FN, 1, true);
+    //    pGraphics->AttachBackground(BACKGROUND_FN);
+
     pGraphics->EnableMouseOver(true);
     pGraphics->EnableMultiTouch(true);
 
@@ -173,7 +173,7 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
                              kCtrlTagLFOVis,
                              "LFO");
 
-    pGraphics->AttachControl(new IVGroupControl("Version 1.0", "LFO", 10.f, 20.f, 10.f, 10.f));
+    pGraphics->AttachControl(new IVGroupControl("Version 1.1", "LFO", 10.f, 20.f, 10.f, 10.f));
 
     pGraphics
         ->AttachControl(new IVButtonControl(
