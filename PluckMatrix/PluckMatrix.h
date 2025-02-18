@@ -51,10 +51,10 @@ private:
   std::array<bool, kNumberOfSeqButtons> CollectSequenceButtons(int patternNr = -1);
   ISender<1, 1, int> mLedSeqSender;
   ISender<1, 1, std::array<bool, kNumberOfSeqButtons>> mSequencerSender;
-  float mPlugUIScale;
   Machine mMachine;
 #endif  // IPLUG_DSP
 private:
+  float mPlugUIScale;
   Patterns mPatterns;
   IMidiQueue mMidiQueue;
   Oscillator mOscillator;
