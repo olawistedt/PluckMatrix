@@ -38,7 +38,7 @@ class PluckMatrix final : public Plugin
 public:
   PluckMatrix(const InstanceInfo &info);
 
-#if IPLUG_DSP
+#if defined(IPLUG_DSP) || defined(WAM_API)
 public:
   void ProcessBlock(sample **inputs, sample **outputs, int nFrames) override;
   void ProcessMidiMsg(const IMidiMsg &msg) override;
@@ -51,10 +51,10 @@ private:
   std::array<bool, kNumberOfSeqButtons> CollectSequenceButtons(int patternNr = -1);
   ISender<1, 1, int> mLedSeqSender;
   ISender<1, 1, std::array<bool, kNumberOfSeqButtons>> mSequencerSender;
-  Machine mMachine;
-#endif  // IPLUG_DSP
-private:
   float mPlugUIScale;
+  Machine mMachine;
+#endif  // IPLUG_DSP or WAM_API
+private:
   Patterns mPatterns;
   IMidiQueue mMidiQueue;
   Oscillator mOscillator;
