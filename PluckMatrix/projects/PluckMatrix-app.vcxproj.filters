@@ -280,7 +280,6 @@
     <ClInclude Include="..\..\iPlug2\IPlug\ISender.h">
       <Filter>IPlug</Filter>
     </ClInclude>
-    <ClInclude Include="..\PluckMatrix_DSP.h" />
     <ClInclude Include="..\Machine.h" />
     <ClInclude Include="..\WitechControls.h" />
     <ClInclude Include="..\Oscillator.h" />

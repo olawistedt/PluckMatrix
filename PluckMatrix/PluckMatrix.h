@@ -16,35 +16,15 @@ enum EParams
   kParamLedBtn0 = 0,
   kParamNoteBtn0 = kParamLedBtn0 + kNumberOfStepsInSequence,
   kParamPropBtn0 = kParamNoteBtn0 + kNumberOfNotes,
-  kParamGain = kParamPropBtn0 + kNumberOfProperties,
-  kParamNoteGlideTime,
-  kParamAttack,
-  kParamDecay,
-  kParamSustain,
-  kParamRelease,
-  kParamLFOShape,
-  kParamLFORateHz,
-  kParamLFORateTempo,
-  kParamLFORateMode,
-  kParamLFODepth,
-  kNumParams
+  kNumParams = kParamPropBtn0 + kNumberOfProperties
 };
-
-#if IPLUG_DSP
-// will use EParams in PluckMatrix_DSP.h
-#include "PluckMatrix_DSP.h"
-#endif
 
 enum EControlTags
 {
   kCtrlTagLedSeq0 = 0,
   kCtrlTagNote0 = kCtrlTagLedSeq0 + kNumberOfStepsInSequence,
   kCtrlTagProp0 = kCtrlTagNote0 + kNumberOfNotes,
-  kCtrlTagMeter = kCtrlTagProp0 + kNumberOfProperties,
-  kCtrlTagLFOVis,
-  kCtrlTagScope,
-  kCtrlTagRTText,
-  kCtrlTagKeyboard,
+  kCtrlTagKeyboard = kCtrlTagProp0 + kNumberOfProperties,
   kCtrlTagBender,
   kNumCtrlTags
 };
@@ -69,10 +49,6 @@ public:
 
 private:
   std::array<bool, kNumberOfSeqButtons> CollectSequenceButtons(int patternNr = -1);
-
-  PluckMatrixDSP<sample> mDSP{ 16 };
-  IPeakAvgSender<2> mMeterSender;
-  ISender<1> mLFOVisSender;
   ISender<1, 1, int> mLedSeqSender;
   ISender<1, 1, std::array<bool, kNumberOfSeqButtons>> mSequencerSender;
   Machine mMachine;

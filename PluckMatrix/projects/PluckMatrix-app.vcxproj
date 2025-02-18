@@ -325,7 +325,6 @@
     <ClInclude Include="..\Oscillator.h" />
     <ClInclude Include="..\Patterns.h" />
     <ClInclude Include="..\PluckMatrix.h" />
-    <ClInclude Include="..\PluckMatrix_DSP.h" />
     <ClInclude Include="..\resources\resource.h" />
     <ClInclude Include="..\WitechControls.h" />
   </ItemGroup>
