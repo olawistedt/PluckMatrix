@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __PLUCKMATRIX_H__
+#define __PLUCKMATRIX_H__
 
 #include "IPlug_include_in_plug_hdr.h"
 #include "IControls.h"
@@ -38,7 +39,7 @@ class PluckMatrix final : public Plugin
 public:
   PluckMatrix(const InstanceInfo &info);
 
-#if defined(IPLUG_DSP) || defined(WAM_API)
+#if IPLUG_DSP
 public:
   void ProcessBlock(sample **inputs, sample **outputs, int nFrames) override;
   void ProcessMidiMsg(const IMidiMsg &msg) override;
@@ -49,15 +50,17 @@ public:
 
 private:
   std::array<bool, kNumberOfSeqButtons> CollectSequenceButtons(int patternNr = -1);
+  Machine mMachine;
+#endif  // IPLUG_DSP
+private:
   ISender<1, 1, int> mLedSeqSender;
   ISender<1, 1, std::array<bool, kNumberOfSeqButtons>> mSequencerSender;
   float mPlugUIScale;
-  Machine mMachine;
-#endif  // IPLUG_DSP or WAM_API
-private:
   Patterns mPatterns;
   IMidiQueue mMidiQueue;
   Oscillator mOscillator;
   int mCurrentLed;
   int mSelectedPattern;
 };
+
+#endif  // __PLUCKMATRIX_H__
