@@ -115,11 +115,11 @@ PluckMatrix::CollectSequenceButtons(int patternNr)
     seq[i] = mPatterns.mNotes[patternNr][col] == row;
   }
 
-  for (int i = 0; i < kNumberOfPropBtns; ++i)
+  for (int i = kNumberOfNoteBtns; i < kNumberOfSeqButtons; ++i)
   {
     int col = i % kNumberOfStepsInSequence;
     int row = i / kNumberOfStepsInSequence;
-    seq[i] = mPatterns.mNotes[patternNr][col] == row;
+    seq[i] = false;
   }
   return seq;
 }
