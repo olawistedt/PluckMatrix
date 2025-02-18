@@ -1,6 +1,5 @@
 #include "PluckMatrix.h"
 #include "WitechControls.h"
-#include "IGraphicsEditorDelegate.h"
 #include "IPlug_include_in_plug_src.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -282,9 +281,9 @@ PluckMatrix::OnIdle()
   mLedSeqSender.TransmitData(*this);
   mSequencerSender.TransmitData(*this);
 
-  // Update the plugin scale.
-  if (GetUI())
-  {
-    mPlugUIScale = GetUI()->GetDrawScale();
-  }
+  //// Update the plugin scale.
+  //if (GetUI())
+  //{
+  //  mPlugUIScale = GetUI()->GetDrawScale();
+  //}
 }
