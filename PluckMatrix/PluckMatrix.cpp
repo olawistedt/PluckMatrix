@@ -65,19 +65,6 @@ PluckMatrix::ProcessMidiMsg(const IMidiMsg &msg)
 }
 
 void
-PluckMatrix::OnIdle()
-{
-  mLedSeqSender.TransmitData(*this);
-  mSequencerSender.TransmitData(*this);
-
-  // Update the plugin scale.
-  if (GetUI())
-  {
-    mPlugUIScale = GetUI()->GetDrawScale();
-  }
-}
-
-void
 PluckMatrix::OnReset()
 {
   mMachine.mSampleRate = GetSampleRate();
@@ -286,4 +273,17 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
         new ITextControl(IRECT(20, 20, 70, 50), "v0.1", IText(30), IColor(255, 255, 255, 255)));
   };
 #endif
+}
+
+void
+PluckMatrix::OnIdle()
+{
+  mLedSeqSender.TransmitData(*this);
+  mSequencerSender.TransmitData(*this);
+
+  // Update the plugin scale.
+  if (GetUI())
+  {
+    mPlugUIScale = GetUI()->GetDrawScale();
+  }
 }
