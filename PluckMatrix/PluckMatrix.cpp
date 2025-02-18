@@ -282,9 +282,9 @@ PluckMatrix::OnIdle()
   mLedSeqSender.TransmitData(*this);
   mSequencerSender.TransmitData(*this);
 
-  // Update the plugin scale.
-  if (GetUI())
-  {
-    mPlugUIScale = GetUI()->GetDrawScale();
-  }
+  //// Update the plugin scale.
+  //if (GetUI())
+  //{
+  //  mPlugUIScale = GetUI()->GetDrawScale();
+  //}
 }
