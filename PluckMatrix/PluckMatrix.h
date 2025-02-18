@@ -8,23 +8,24 @@
 
 const int kNumPresets = 1;
 const int kNumberOfStepsInSequence = 32;
-const int kNumberOfProperties = 32 * 2;
-const int kNumberOfSeqButtons = kNumberOfNotes + kNumberOfProperties;
+const int kNumberOfNoteBtns = kNumberOfStepsInSequence * kNrOfNotes;
+const int kNumberOfPropBtns = kNumberOfStepsInSequence * kNrOfProps;
+const int kNumberOfSeqButtons = kNumberOfNoteBtns + kNumberOfPropBtns;
 
 enum EParams
 {
   kParamLedBtn0 = 0,
   kParamNoteBtn0 = kParamLedBtn0 + kNumberOfStepsInSequence,
-  kParamPropBtn0 = kParamNoteBtn0 + kNumberOfNotes,
-  kNumParams = kParamPropBtn0 + kNumberOfProperties
+  kParamPropBtn0 = kParamNoteBtn0 + kNumberOfNoteBtns,
+  kNumParams = kParamPropBtn0 + kNumberOfPropBtns
 };
 
 enum EControlTags
 {
   kCtrlTagLedSeq0 = 0,
   kCtrlTagNote0 = kCtrlTagLedSeq0 + kNumberOfStepsInSequence,
-  kCtrlTagProp0 = kCtrlTagNote0 + kNumberOfNotes,
-  kCtrlTagKeyboard = kCtrlTagProp0 + kNumberOfProperties,
+  kCtrlTagProp0 = kCtrlTagNote0 + kNumberOfNoteBtns,
+  kCtrlTagKeyboard = kCtrlTagProp0 + kNumberOfPropBtns,
   kCtrlTagBender,
   kNumCtrlTags
 };

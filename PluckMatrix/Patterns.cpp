@@ -110,7 +110,21 @@ Patterns::randomize(int patternNr)
     //  mPattern[i][playedNote + baseNote + 7] = true;
     //}
 
-    mNotes[0][i] = playedNote % 12;
+    mNotes[0][i] = 11 - (playedNote % 12);  // The C is 0 and B is 11
+    mProps[0][i] = 0;
+    if (octave == -1)
+    {
+      mProps[0][i] = 0x1;
+    }
+    else if (octave == 1)
+    {
+      mProps[0][i] = 0x2;
+    }
+    else
+    {
+      mProps[0][i] = mProps[0][i] | 0x2;
+    }
+
     //notes[i].octave = octave;
     //notes[i].accent = (std::rand() % 100) < 30;  // 30%
     //notes[i].slide = (std::rand() % 100) < 15;   // 15%

@@ -2,7 +2,8 @@
 #define __PATTERNS_H__
 
 const int kNumberOfPatterns = 24;
-const int kNumberOfNotes = 32 * 12;
+const int kNrOfNotes = 12;
+const int kNrOfProps = 2;
 
 //------------------------------------------------------------------------------------------
 // PATTERNS
@@ -13,7 +14,8 @@ public:
   Patterns();
   void randomize(int patternNr);
 
-  int mNotes[kNumberOfPatterns][kNumberOfNotes];
+  int mNotes[kNumberOfPatterns][kNrOfNotes];
+  int mProps[kNumberOfPatterns][kNrOfProps];
   int mSelectedPattern;
 };
 

@@ -1,7 +1,6 @@
 #include "PluckMatrix.h"
 #include "WitechControls.h"
 #include "IPlug_include_in_plug_src.h"
-#include "LFO.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // DSP
@@ -82,6 +81,7 @@ void
 PluckMatrix::OnReset()
 {
   mMachine.mSampleRate = GetSampleRate();
+  mPatterns.randomize(0);
   mSequencerSender.PushData({ kCtrlTagNote0, { CollectSequenceButtons(-1) } });
 }
 
@@ -108,7 +108,14 @@ PluckMatrix::CollectSequenceButtons(int patternNr)
     patternNr = mPatterns.mSelectedPattern;
   }
 
-  for (int i = 0; i < kNumberOfNotes; ++i)
+  for (int i = 0; i < kNumberOfNoteBtns; ++i)
+  {
+    int col = i % kNumberOfStepsInSequence;
+    int row = i / kNumberOfStepsInSequence;
+    seq[i] = mPatterns.mNotes[patternNr][col] == row;
+  }
+
+  for (int i = 0; i < kNumberOfPropBtns; ++i)
   {
     int col = i % kNumberOfStepsInSequence;
     int row = i / kNumberOfStepsInSequence;
@@ -138,7 +145,7 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
   }
 
   // Note buttons. We don't want them to be able to automate.
-  for (int i = kParamNoteBtn0; i < kParamNoteBtn0 + kNumberOfNotes; ++i)
+  for (int i = kParamNoteBtn0; i < kParamNoteBtn0 + kNumberOfNoteBtns; ++i)
   {
     GetParam(i)->InitBool(("Note button " + std::to_string(i - kParamNoteBtn0)).c_str(),
                           false,
@@ -147,7 +154,7 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
   }
 
   // Property buttons. We don't want them to be able to automate.
-  for (int i = kParamPropBtn0; i < kParamPropBtn0 + kNumberOfProperties; ++i)
+  for (int i = kParamPropBtn0; i < kParamPropBtn0 + kNumberOfPropBtns; ++i)
   {
     GetParam(i)->InitBool(("Proerty Note button " + std::to_string(i - kParamPropBtn0)).c_str(),
                           false,
@@ -156,7 +163,7 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
   }
 
   // Note buttons and property buttons. We don't want them to be able to automate.
-  for (int i = kParamPropBtn0; i < kParamPropBtn0 + kNumberOfProperties; ++i)
+  for (int i = kParamPropBtn0; i < kParamPropBtn0 + kNumberOfPropBtns; ++i)
   {
     GetParam(i)->InitBool(("Property button " + std::to_string(i - kParamPropBtn0)).c_str(),
                           false,
@@ -178,10 +185,13 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
   {
     pGraphics->AttachCornerResizer(EUIResizerMode::Scale, false);
 
+#ifdef WAM_API
     const IColor COLOR_PLUCK_MATRIX_BLACK(255, 30, 30, 30);
     pGraphics->AttachPanelBackground(COLOR_PLUCK_MATRIX_BLACK);
-    //    pGraphics->LoadBitmap(BACKGROUND_FN, 1, true);
-    //    pGraphics->AttachBackground(BACKGROUND_FN);
+#else
+    pGraphics->LoadBitmap(BACKGROUND_FN, 1, true);
+    pGraphics->AttachBackground(BACKGROUND_FN);
+#endif
 
     pGraphics->EnableMouseOver(true);
     pGraphics->EnableMultiTouch(true);
