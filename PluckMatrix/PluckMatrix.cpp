@@ -3,6 +3,10 @@
 #include "IPlug_include_in_plug_src.h"
 #include "LFO.h"
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// DSP
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 #if IPLUG_DSP
 void
 PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
@@ -113,7 +117,12 @@ PluckMatrix::CollectSequenceButtons(int patternNr)
   return seq;
 }
 
-#endif
+#endif  // IPLUG_DSP
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// GUI
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 PluckMatrix::PluckMatrix(const InstanceInfo &info) :
   iplug::Plugin(info, MakeConfig(kNumParams, kNumPresets)),
@@ -183,9 +192,6 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
 
     //    pGraphics->EnableLiveEdit(true);
     pGraphics->LoadFont("Roboto-Regular", ROBOTO_FN);
-    const IRECT b = pGraphics->GetBounds().GetPadded(-20.f);
-    IRECT keyboardBounds = b.GetFromBottom(300);
-    IRECT wheelsBounds = keyboardBounds.ReduceFromLeft(100.f).GetPadded(-10.f);
 
     // Note buttons
     const IBitmap noteBtnBitmap = pGraphics->LoadBitmap(PNGBTNNOTE_FN, 2, true);
@@ -237,7 +243,9 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
                                                    32),
                                kCtrlTagLedSeq0 + i);
     }
-    pGraphics->AttachControl(new IVKeyboardControl(keyboardBounds, 36, 80), kCtrlTagKeyboard);
+
+    IRECT keyboardBounds(20, 750, 1900, 980);
+    pGraphics->AttachControl(new IVKeyboardControl(keyboardBounds, 36, 89), kCtrlTagKeyboard);
     pGraphics
         ->AttachControl(new IVButtonControl(
             keyboardBounds.GetFromTRHC(200, 30).GetTranslated(0, -30),
@@ -261,6 +269,7 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
               ->As<IVKeyboardControl>()
               ->SetNoteFromMidi(msg.NoteNumber(), msg.StatusMsg() == IMidiMsg::kNoteOn);
         });
+
     mPlugUIScale = 0.5f;
     pGraphics->Resize(PLUG_WIDTH, PLUG_HEIGHT, mPlugUIScale, true);
     pGraphics->AttachControl(
