@@ -38,6 +38,7 @@ class PluckMatrix final : public Plugin
 {
 public:
   PluckMatrix(const InstanceInfo &info);
+  void OnIdle() override;
 
 #if IPLUG_DSP
 public:
@@ -46,7 +47,6 @@ public:
   void OnReset() override;
   void OnParamChange(int paramIdx) override;
   void OnParamChangeUI(int paramIdx, EParamSource source) override;
-  void OnIdle() override;
 
 private:
   std::array<bool, kNumberOfSeqButtons> CollectSequenceButtons(int patternNr = -1);
