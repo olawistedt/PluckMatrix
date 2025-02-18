@@ -45,12 +45,12 @@ public:
   void OnParamChange(int paramIdx) override;
   void OnParamChangeUI(int paramIdx, EParamSource source) override;
   void OnIdle() override;
-  bool OnMessage(int msgTag, int ctrlTag, int dataSize, const void *pData) override;
 
 private:
   std::array<bool, kNumberOfSeqButtons> CollectSequenceButtons(int patternNr = -1);
   ISender<1, 1, int> mLedSeqSender;
   ISender<1, 1, std::array<bool, kNumberOfSeqButtons>> mSequencerSender;
+  float mPlugUIScale;
   Machine mMachine;
 #endif  // IPLUG_DSP
 private:

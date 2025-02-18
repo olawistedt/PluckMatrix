@@ -3,8 +3,121 @@
 #include "IPlug_include_in_plug_src.h"
 #include "LFO.h"
 
+#if IPLUG_DSP
+void
+PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
+{
+  mLedSeqSender.PushData({ kCtrlTagLedSeq0, { mMachine.getStep() } });
+  mMachine.mBpm = GetTempo();
+  mOscillator.SetSampleRate(GetSampleRate());
+
+  for (int offset = 0; offset < nFrames; ++offset)
+  {
+    // The built in keyboard sends midi messages.
+    while (!mMidiQueue.Empty())
+    {
+      IMidiMsg msg = mMidiQueue.Peek();
+      if (msg.mOffset > offset)
+        break;
+
+      if (msg.StatusMsg() == IMidiMsg::kNoteOn)
+      {
+        if (msg.NoteNumber() >= 48 && msg.NoteNumber() <= 71)
+        {                          // Octav 2 and octav 3
+          mMachine.setStep(0, 0);  // When pattern note is pressed, begin the pattern from start.
+          mMachine.start();        // Start the sequencer.
+          mOscillator.NoteOn(msg.NoteNumber());  // Play midi notes outside the pattern range.
+        }
+        else
+        {
+          mOscillator.NoteOn(msg.NoteNumber());  // Play midi notes outside the pattern range.
+        }
+      }
+      else if (msg.StatusMsg() == IMidiMsg::kNoteOff)
+      {
+        mMachine.stop();
+        mOscillator.NoteOff();
+      }
+
+      mMidiQueue.Remove();
+    }
+
+
+    if (mMachine.StepSequencerOneSample())  // Returns true if a new step is entered.
+    {
+      mCurrentLed = mMachine.getStep();
+      mLedSeqSender.PushData({ kCtrlTagLedSeq0, { mCurrentLed } });
+    }
+    outputs[0][offset] = outputs[1][offset] = mOscillator.ProcessSample();
+  }
+
+  mMidiQueue.Flush(nFrames);
+}
+
+void
+PluckMatrix::ProcessMidiMsg(const IMidiMsg &msg)
+{
+  TRACE;
+  mMidiQueue.Add(msg);  // Take care of MIDI events in ProcessBlock()
+}
+
+void
+PluckMatrix::OnIdle()
+{
+  mLedSeqSender.TransmitData(*this);
+  mSequencerSender.TransmitData(*this);
+
+  // Update the plugin scale.
+  if (GetUI())
+  {
+    mPlugUIScale = GetUI()->GetDrawScale();
+  }
+}
+
+void
+PluckMatrix::OnReset()
+{
+  mMachine.mSampleRate = GetSampleRate();
+  mSequencerSender.PushData({ kCtrlTagNote0, { CollectSequenceButtons(-1) } });
+}
+
+
+void
+PluckMatrix::OnParamChange(int paramIdx)
+{
+}
+
+void
+PluckMatrix::OnParamChangeUI(int paramIdx, EParamSource source)
+{
+#if IPLUG_EDITOR
+#endif  // IPLUG_EDITOR
+}
+
+std::array<bool, kNumberOfSeqButtons>
+PluckMatrix::CollectSequenceButtons(int patternNr)
+{
+  std::array<bool, kNumberOfSeqButtons> seq;
+
+  if (patternNr == -1)
+  {
+    patternNr = mPatterns.mSelectedPattern;
+  }
+
+  for (int i = 0; i < kNumberOfNotes; ++i)
+  {
+    int col = i % kNumberOfStepsInSequence;
+    int row = i / kNumberOfStepsInSequence;
+    seq[i] = mPatterns.mNotes[patternNr][col] == row;
+  }
+  return seq;
+}
+
+#endif
+
 PluckMatrix::PluckMatrix(const InstanceInfo &info) :
-  iplug::Plugin(info, MakeConfig(kNumParams, kNumPresets))
+  iplug::Plugin(info, MakeConfig(kNumParams, kNumPresets)),
+  mPlugUIScale(1.0)
 {
   // Led buttons. We don't want them to be able to automate.
   for (int i = kParamLedBtn0; i < kParamLedBtn0 + 32; ++i)
@@ -124,13 +237,7 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
                                                    32),
                                kCtrlTagLedSeq0 + i);
     }
-
-
     pGraphics->AttachControl(new IVKeyboardControl(keyboardBounds, 36, 80), kCtrlTagKeyboard);
-    pGraphics->AttachControl(new IWheelControl(wheelsBounds.FracRectHorizontal(0.5)),
-                             kCtrlTagBender);
-    pGraphics->AttachControl(new IWheelControl(wheelsBounds.FracRectHorizontal(0.5, true),
-                                               IMidiMsg::EControlChangeMsg::kModWheel));
     pGraphics
         ->AttachControl(new IVButtonControl(
             keyboardBounds.GetFromTRHC(200, 30).GetTranslated(0, -30),
@@ -154,119 +261,10 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
               ->As<IVKeyboardControl>()
               ->SetNoteFromMidi(msg.NoteNumber(), msg.StatusMsg() == IMidiMsg::kNoteOn);
         });
+    mPlugUIScale = 0.5f;
+    pGraphics->Resize(PLUG_WIDTH, PLUG_HEIGHT, mPlugUIScale, true);
+    pGraphics->AttachControl(
+        new ITextControl(IRECT(20, 20, 70, 50), "v0.1", IText(30), IColor(255, 255, 255, 255)));
   };
 #endif
 }
-
-#if IPLUG_DSP
-
-void
-PluckMatrix::ProcessMidiMsg(const IMidiMsg &msg)
-{
-  TRACE;
-  mMidiQueue.Add(msg);  // Take care of MIDI events in ProcessBlock()
-}
-
-void
-PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
-{
-  mLedSeqSender.PushData({ kCtrlTagLedSeq0, { mMachine.getStep() } });
-  mMachine.mBpm = GetTempo();
-  mOscillator.SetSampleRate(GetSampleRate());
-
-  for (int offset = 0; offset < nFrames; ++offset)
-  {
-    // The built in keyboard sends midi messages.
-    while (!mMidiQueue.Empty())
-    {
-      IMidiMsg msg = mMidiQueue.Peek();
-      if (msg.mOffset > offset)
-        break;
-
-      if (msg.StatusMsg() == IMidiMsg::kNoteOn)
-      {
-        if (msg.NoteNumber() >= 48 && msg.NoteNumber() <= 71)
-        {                          // Octav 2 and octav 3
-          mMachine.setStep(0, 0);  // When pattern note is pressed, begin the pattern from start.
-          mMachine.start();        // Start the sequencer.
-          mOscillator.NoteOn(msg.NoteNumber());  // Play midi notes outside the pattern range.
-        }
-        else
-        {
-          mOscillator.NoteOn(msg.NoteNumber());  // Play midi notes outside the pattern range.
-        }
-      }
-      else if (msg.StatusMsg() == IMidiMsg::kNoteOff)
-      {
-        mMachine.stop();
-        mOscillator.NoteOff();
-      }
-
-      mMidiQueue.Remove();
-    }
-
-
-    if (mMachine.StepSequencerOneSample())  // Returns true if a new step is entered.
-    {
-      mCurrentLed = mMachine.getStep();
-      mLedSeqSender.PushData({ kCtrlTagLedSeq0, { mCurrentLed } });
-    }
-    outputs[0][offset] = outputs[1][offset] = mOscillator.ProcessSample();
-  }
-
-  mMidiQueue.Flush(nFrames);
-}
-
-void
-PluckMatrix::OnIdle()
-{
-  mLedSeqSender.TransmitData(*this);
-  mSequencerSender.TransmitData(*this);
-}
-
-void
-PluckMatrix::OnReset()
-{
-  mMachine.mSampleRate = GetSampleRate();
-  mSequencerSender.PushData({ kCtrlTagNote0, { CollectSequenceButtons(-1) } });
-}
-
-
-void
-PluckMatrix::OnParamChange(int paramIdx)
-{
-}
-
-void
-PluckMatrix::OnParamChangeUI(int paramIdx, EParamSource source)
-{
-#if IPLUG_EDITOR
-#endif  // IPLUG_EDITOR
-}
-
-bool
-PluckMatrix::OnMessage(int msgTag, int ctrlTag, int dataSize, const void *pData)
-{
-  return false;
-}
-
-std::array<bool, kNumberOfSeqButtons>
-PluckMatrix::CollectSequenceButtons(int patternNr)
-{
-  std::array<bool, kNumberOfSeqButtons> seq;
-
-  if (patternNr == -1)
-  {
-    patternNr = mPatterns.mSelectedPattern;
-  }
-
-  for (int i = 0; i < kNumberOfNotes; ++i)
-  {
-    int col = i % kNumberOfStepsInSequence;
-    int row = i / kNumberOfStepsInSequence;
-    seq[i] = mPatterns.mNotes[patternNr][col] == row;
-  }
-  return seq;
-}
-
-#endif
