@@ -1,5 +1,6 @@
 #include "PluckMatrix.h"
 #include "WitechControls.h"
+#include "IGraphicsEditorDelegate.h"
 #include "IPlug_include_in_plug_src.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
