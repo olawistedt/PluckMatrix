@@ -11,6 +11,13 @@ const int kNrOfProps = 2;
 class Patterns
 {
 public:
+  enum
+  {
+    kNoNote = -1,
+    kOctaveMediumMask = 0x0,
+    kOctaveLowMask = 0x1,
+    kOctaveHighMask = 0x2
+  };
   Patterns();
   void randomize(int patternNr);
 

@@ -13,6 +13,7 @@ PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
   mLedSeqSender.PushData({ kCtrlTagLedSeq0, { mMachine.getStep() } });
   mMachine.mBpm = GetTempo();
   mOscillator.SetSampleRate(GetSampleRate());
+  mMachine.setSamplesPer16th(GetSampleRate());
 
   for (int offset = 0; offset < nFrames; ++offset)
   {
@@ -45,11 +46,26 @@ PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
       mMidiQueue.Remove();
     }
 
-
-    if (mMachine.StepSequencerOneSample())  // Returns true if a new step is entered.
+    int info = mMachine.StepSequencerOneSample();
+    if (info == Machine::kNewStep)  // Returns true if a new step is entered.
     {
       mCurrentLed = mMachine.getStep();
       mLedSeqSender.PushData({ kCtrlTagLedSeq0, { mCurrentLed } });
+
+      int note = mPatterns.mNotes[0][mMachine.getStep()];
+
+      if (note != Patterns::kNoNote)
+      {
+        mOscillator.NoteOn(36 + note);
+      }
+      else
+      {
+        mOscillator.NoteOff();
+      }
+    }
+    else if (info == Machine::kNoteOff)
+    {
+      mOscillator.NoteOff();
     }
     outputs[0][offset] = outputs[1][offset] = mOscillator.ProcessSample();
   }

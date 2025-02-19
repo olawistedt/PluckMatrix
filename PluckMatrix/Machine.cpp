@@ -6,7 +6,13 @@
 //
 // The machine has only one task and that is to keep track of where the sequencer are.
 //
-Machine::Machine() : mCurrentStep(0), mNextStep(0), mDriftError(0.0), mCountDown(-1), mRunning(true)
+Machine::Machine() :
+  mCurrentStep(0),
+  mNextStep(0),
+  mDriftError(0.0),
+  mCountDown(-1),
+  mRunning(true),
+  mSamplesPer16th(0)
 {
 }
 
@@ -17,23 +23,36 @@ Machine::setStep(int inStep, int samplesLeftInStep)
   mCountDown = samplesLeftInStep;
 }
 
+void
+Machine::setSamplesPer16th(double sampleRate)
+{
+  double secondsPerBeat = 60.0 / mBpm;
+  double secondsPer16th = secondsPerBeat / 4.0;
+  mSamplesPer16th = static_cast<int>(sampleRate * secondsPer16th);
+}
+
 int
 Machine::getStep()
 {
   return mCurrentStep;
 }
 
-bool  // Returns true if on a beginning of a new 16th
+int  // Returns true if on a beginning of a new 16th
 Machine::StepSequencerOneSample()
 {
   if (mRunning == false)
   {
-    return false;
+    return kNoEvent;
   }
   if (mCountDown > 0)
   {
     mCountDown--;
-    return false;
+
+    if (static_cast<float>(mCountDown) / static_cast<float>(mSamplesPer16th) < 0.1f)
+    {
+      return kNoteOff;
+    }
+    return kNoEvent;
   }
   else  // mCountDown <= 0, a new step begins
   {
@@ -56,7 +75,7 @@ Machine::StepSequencerOneSample()
     }
     mCurrentStep = mNextStep;
     mNextStep = (mCurrentStep + 1) % kNumberOfStepsInSequence;
-    return true;
+    return kNewStep;
   }
 }
 

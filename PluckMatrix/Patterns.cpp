@@ -48,18 +48,6 @@ Patterns::randomize(int patternNr)
     }
   }
 
-  //  // Print the rhythm (optional)
-  //  std::string pattern;
-  //  for (bool beat : rhythm)
-  //  {
-  //    pattern += (beat ? "# " : ". ");
-  //  }
-  //#ifdef _DEBUG
-  //  OutputDebugString(pattern.c_str());
-  //  OutputDebugString("\n");
-  //#endif
-
-
   const int kNoteNrForC0 = 24;  // The midi note number for C0
   const int kNoteNrForC1 = 36;  // The midi note number for C1
   const int kNoteNrForC2 = 48;  // The midi note number for C2
@@ -114,21 +102,21 @@ Patterns::randomize(int patternNr)
     mProps[0][i] = 0;
     if (octave == -1)
     {
-      mProps[0][i] = 0x1;
+      mProps[0][i] = mProps[0][i] | kOctaveLowMask;
     }
     else if (octave == 1)
     {
-      mProps[0][i] = 0x2;
+      mProps[0][i] = mProps[0][i] | kOctaveHighMask;
     }
-    else
+
+    if ((std::rand() % 100) < 25)  // 25% probability it will be silent
     {
-      mProps[0][i] = mProps[0][i] | 0x2;
+      mNotes[0][i] = kNoNote;
     }
 
     //notes[i].octave = octave;
     //notes[i].accent = (std::rand() % 100) < 30;  // 30%
     //notes[i].slide = (std::rand() % 100) < 15;   // 15%
-    //notes[i].gate = (std::rand() % 100) < 75;    // 75%
 
     // Increase step
     i++;
