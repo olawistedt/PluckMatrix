@@ -4,7 +4,7 @@
 #include "IPlug_include_in_plug_hdr.h"
 #include "IControls.h"
 #include "Machine.h"
-#include "Oscillator.h"
+#include "Synth.h"
 #include "Patterns.h"
 
 const int kNumPresets = 1;
@@ -58,7 +58,7 @@ private:
   float mPlugUIScale;
   Patterns mPatterns;
   IMidiQueue mMidiQueue;
-  Oscillator mOscillator;
+  Synth mSynth;
   int mCurrentLed;
   int mSelectedPattern;
   bool mUseEffects;

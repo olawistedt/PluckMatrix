@@ -12,7 +12,7 @@ void
 PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
 {
   mLedSeqSender.PushData({ kCtrlTagLedSeq0, { mMachine.getStep() } });
-  mOscillator.SetSampleRate(GetSampleRate());
+  mSynth.SetSampleRate(GetSampleRate());
   mMachine.setSamplesPer16th(GetSampleRate());
 
   for (int offset = 0; offset < nFrames; ++offset)
@@ -30,17 +30,17 @@ PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
         {                          // Octav 2 and octav 3
           mMachine.setStep(0, 0);  // When pattern note is pressed, begin the pattern from start.
           mMachine.start();        // Start the sequencer.
-          mOscillator.NoteOn(msg.NoteNumber());  // Play midi notes outside the pattern range.
+          mSynth.NoteOn(msg.NoteNumber());  // Play midi notes outside the pattern range.
         }
         else
         {
-          mOscillator.NoteOn(msg.NoteNumber());  // Play midi notes outside the pattern range.
+          mSynth.NoteOn(msg.NoteNumber());  // Play midi notes outside the pattern range.
         }
       }
       else if (msg.StatusMsg() == IMidiMsg::kNoteOff)
       {
         mMachine.stop();
-        mOscillator.NoteOff();
+        mSynth.NoteOff();
       }
 
       mMidiQueue.Remove();
@@ -56,20 +56,20 @@ PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
 
       if (note != Patterns::kNoNote)
       {
-        mOscillator.NoteOn(36 + note);
+        mSynth.NoteOn(36 + note);
       }
       else
       {
-        mOscillator.NoteOff();
+        mSynth.NoteOff();
       }
     }
     else if (info == Machine::kNoteOff)
     {
-      mOscillator.NoteOff();
+      mSynth.NoteOff();
     }
 
 
-    double oscOut = mOscillator.ProcessSample();
+    double oscOut = mSynth.ProcessSample();
     double volume = 0.7;
 
     if (mUseEffects)
