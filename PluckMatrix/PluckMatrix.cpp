@@ -1,5 +1,6 @@
 #include "PluckMatrix.h"
 #include "WitechControls.h"
+#include "Effects.h"
 #include "IPlug_include_in_plug_src.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -11,7 +12,6 @@ void
 PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
 {
   mLedSeqSender.PushData({ kCtrlTagLedSeq0, { mMachine.getStep() } });
-  mMachine.mBpm = GetTempo();
   mOscillator.SetSampleRate(GetSampleRate());
   mMachine.setSamplesPer16th(GetSampleRate());
 
@@ -67,7 +67,23 @@ PluckMatrix::ProcessBlock(sample **inputs, sample **outputs, int nFrames)
     {
       mOscillator.NoteOff();
     }
-    outputs[0][offset] = outputs[1][offset] = mOscillator.ProcessSample();
+
+
+    double oscOut = mOscillator.ProcessSample();
+    double volume = 0.7;
+
+    if (mUseEffects)
+    {
+      double tubeOut = processAcidTubeSaturatorBlock(GetSampleRate(), oscOut);
+      std::pair<double, double> delayOut = processDelayReverbAudioBlock(GetSampleRate(), tubeOut);
+      outputs[0][offset] = delayOut.first * volume;
+      outputs[1][offset] = delayOut.second * volume;
+    }
+    else
+    {
+      outputs[0][offset] = oscOut * volume;
+      outputs[1][offset] = oscOut * volume;
+    }
   }
 
   mMidiQueue.Flush(nFrames);
@@ -86,6 +102,7 @@ PluckMatrix::OnReset()
   mMachine.mSampleRate = GetSampleRate();
   mPatterns.randomize(0);
   mSequencerSender.PushData({ kCtrlTagNote0, { CollectSequenceButtons(-1) } });
+  mMachine.mBpm = 140;
 }
 
 
@@ -115,7 +132,7 @@ PluckMatrix::CollectSequenceButtons(int patternNr)
   {
     int col = i % kNumberOfStepsInSequence;
     int row = i / kNumberOfStepsInSequence;
-    seq[i] = mPatterns.mNotes[patternNr][col] == row;
+    seq[i] = mPatterns.mNotes[patternNr][col] == 11 - (row % 12);
   }
 
   for (int i = kNumberOfNoteBtns; i < kNumberOfSeqButtons; ++i)
@@ -136,6 +153,7 @@ PluckMatrix::CollectSequenceButtons(int patternNr)
 
 PluckMatrix::PluckMatrix(const InstanceInfo &info) :
   iplug::Plugin(info, MakeConfig(kNumParams, kNumPresets)),
+  mUseEffects(true),
   mPlugUIScale(1.0)
 {
   // Led buttons. We don't want them to be able to automate.
@@ -192,8 +210,10 @@ PluckMatrix::PluckMatrix(const InstanceInfo &info) :
     const IColor COLOR_PLUCK_MATRIX_BLACK(255, 30, 30, 30);
     pGraphics->AttachPanelBackground(COLOR_PLUCK_MATRIX_BLACK);
 #else
-    pGraphics->LoadBitmap(BACKGROUND_FN, 1, true);
-    pGraphics->AttachBackground(BACKGROUND_FN);
+    const IColor COLOR_PLUCK_MATRIX_BLACK(255, 0, 50, 255);
+    pGraphics->AttachPanelBackground(COLOR_PLUCK_MATRIX_BLACK);
+//  pGraphics->LoadBitmap(BACKGROUND_FN, 1, true);
+//  pGraphics->AttachBackground(BACKGROUND_FN);
 #endif
 
     pGraphics->EnableMouseOver(true);

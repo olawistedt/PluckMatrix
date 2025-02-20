@@ -87,6 +87,8 @@
     <ClCompile Include="..\WitechControls.cpp" />
     <ClCompile Include="..\Oscillator.cpp" />
     <ClCompile Include="..\Patterns.cpp" />
+    <ClCompile Include="..\Effects.cpp" />
+    <ClCompile Include="..\Synth.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PluckMatrix.h" />
@@ -284,6 +286,8 @@
     <ClInclude Include="..\WitechControls.h" />
     <ClInclude Include="..\Oscillator.h" />
     <ClInclude Include="..\Patterns.h" />
+    <ClInclude Include="..\Effects.h" />
+    <ClInclude Include="..\Synth.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="resources">

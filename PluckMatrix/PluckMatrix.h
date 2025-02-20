@@ -61,6 +61,7 @@ private:
   Oscillator mOscillator;
   int mCurrentLed;
   int mSelectedPattern;
+  bool mUseEffects;
 };
 
 #endif  // __PLUCKMATRIX_H__

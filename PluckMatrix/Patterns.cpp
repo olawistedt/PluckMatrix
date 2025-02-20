@@ -109,10 +109,10 @@ Patterns::randomize(int patternNr)
       mProps[0][i] = mProps[0][i] | kOctaveHighMask;
     }
 
-    if ((std::rand() % 100) < 25)  // 25% probability it will be silent
-    {
-      mNotes[0][i] = kNoNote;
-    }
+    //if ((std::rand() % 100) < 25)  // 25% probability it will be silent
+    //{
+    //  mNotes[0][i] = kNoNote;
+    //}
 
     //notes[i].octave = octave;
     //notes[i].accent = (std::rand() % 100) < 30;  // 30%
@@ -120,5 +120,35 @@ Patterns::randomize(int patternNr)
 
     // Increase step
     i++;
+  }
+
+  // A nice trance pluck
+  for (int i = 0; i < kNrOf16ths; i++)
+  {
+    // A,  A#, B,  C,  C#, D,  D#, E,  F, F#, G , G#
+    // 45, 46, 47, 48, 49, 50, 51, 52, 53,54, 55, 56
+    // 57, 58, 59, 60, 61, 62, 63, 64, 65,66, 67, 68
+    mNotes[0][i] = 45;  // Set all to A
+    if (i == 2 || i == 5 || i == 8)
+    {
+      mNotes[0][i] = 64;  // Set to E3
+    }
+    else if (i == 11 || i == 14 || i == 30)
+    {
+      mNotes[0][i] = 69;  // Set to A3
+    }
+    else if (i == 18)
+    {
+      mNotes[0][i] = 67;  // Set to G3
+    }
+    else if (i == 21 || i == 24)
+    {
+      mNotes[0][i] = 60;  // Set to C3
+    }
+    else if (i == 27)
+    {
+      mNotes[0][i] = 65;  // Set to F3
+    }
+    mNotes[0][i] -= 36;  // Compensate for the + 36 done later
   }
 }
